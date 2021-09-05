@@ -9,17 +9,18 @@
     </table>
     <table>
       <tr>
-        <th>Nº parte</th>
         <th>Fecha de creación</th>
         <th>Información</th>
       </tr>
       <tr v-for="(incidence, index) in incidences" v-bind:key="index">
-        <td v-if="!admin"><a href="#" @click="detail(incidence)">{{incidence.id}}</a></td>
-        <td v-else>{{incidence.id}}</td>
-        <td v-if="incidence.initDateTime">{{incidence.initDateTime}}</td>
-        <td v-else>--</td>
-        <td v-if="incidence.issueDesc">{{incidence.issueDesc}}</td>
-        <td v-else>--</td>
+        <td @click="!admin? detail(incidence): null">
+          <div v-if="incidence.initDateTime">{{ dateFormat(incidence.initDateTime) }}</div>
+          <div v-else>--</div>
+        </td>
+        <td @click="!admin? detail(incidence): null">
+          <div v-if="incidence.issueDesc">{{incidence.issueDesc}}</div>
+          <div v-else>--</div>
+        </td>
       </tr>
     </table><br />
     </div>
@@ -41,6 +42,10 @@ export default {
     }
   },
   methods: {
+    dateFormat: function(startTimeISOString)
+    {
+      return new Date(startTimeISOString).toLocaleDateString();
+    },
     check: function()
     {
       return Object.keys(this.incidences).length >0;

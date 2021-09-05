@@ -8,23 +8,30 @@
     </table><br />
     <table>
         <tr>
-            <th>ID de empleado</th>
             <th>DNI del empleado</th>
             <th>Nombre</th>
             <th>Primer apellido</th>
             <th>Segundo apellido</th>
             <th>Tipo de empleado</th>
-            <th colspan="3">--</th>
+            <th>--</th>
         </tr>
         <tr v-for="(employee, index) in employees" v-bind:key="index">
-            <td><a href="#" @click="panel(employee)">{{employee.id}}</a></td>
             <td>{{employee.dni}}</td>
             <td>{{employee.name}}</td>
             <td>{{employee.surname1}}</td>
             <td>{{employee.surname2}}</td>
             <td>{{employee.tipo}}</td>
-            <td><a href="#" @click="deleteEmployee(employee.id)">Borrar</a></td>
-            <td><a href="#" @click="edit(employee)">Editar</a></td>
+            <td style="width:10%; height: 2%;">
+              <a @click="deleteEmployee(employee.id)" href="#">
+                <img class="cierra" src="./delete.png" alt="Borrar empleado" style="width:12%; height: 12%;"/>
+              </a>
+              <a @click="edit(employee)" href="#">
+                <img class="cierra" src="./edit.png" alt="Editar empleado" style="width:12%; height: 12%;"/>
+              </a>
+              <a @click="panel(employee)" href="#">
+                <img class="cierra" src="./see.png" alt="Ver empleado" style="width:12%; height: 12%;"/>
+              </a>
+            </td>
         </tr>
         <tr>
           <td colspan="8">

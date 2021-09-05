@@ -26,11 +26,15 @@
         <td>{{incidence.initDateTime}}</td>
       </tr>
       <tr v-if="incidence.state == 1 && user.permissions.includes('6') && incidence.owner.id == user.id">
-        <td v-if="!edit">
-            <a href="#" @click="deleteIncidence()">Borrar</a>
+        <td v-if="!edit" style="width:10%; height: 2%;">
+          <a @click="deleteIncidence()" href="#">
+            <img class="cierra" src="./delete.png" alt="Borrar incidencia" style="width:4%; height: 4%;"/>
+          </a>
         </td>
-        <td v-if="!edit">
-            <a href="#" @click="edit=true">Editar</a>
+        <td v-if="!edit" style="width:10%; height: 2%;">
+          <a  @click="edit=true" href="#">
+            <img class="cierra" src="./edit.png" alt="Editar incidencia" style="width:4%; height: 4%;"/>
+          </a>
         </td>
       </tr>
       <tr v-else-if="incidence.state == 1 && (user.permissions.includes('3') || user.permissions.includes('10')) && incidence.owner.id != user.id">
