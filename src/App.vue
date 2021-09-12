@@ -1,7 +1,7 @@
 <template>
 		<form v-if="page == 'select'" action="curriculum.php" method="post" >
 			<label>Tipo</label>
-			<input name="tipo" type="text" id="tipo" required>
+			<input v-model="selected" name="tipo" type="text" id="tipo" required>
 			<input @click="page='main'" type="submit" name="Submit" value="LOGIN">
 		</form>
 		<div v-else id="page-wrap">		
@@ -24,35 +24,41 @@
 				<dd class="clear"></dd>				
 				<dt class="formacion">Formación académica</dt>
 				<dd>
-					<h2><strong>Bachillerato científico-técnico</strong></h2>
 					<ul>
-						<li><strong>Centro:</strong> I.E.S Carrús</li>
-						<li><strong>Graduación:</strong> 2017</li>
-					</ul>
-				</dd>
-				<dd>
-					<h2><strong>Administración de Sistemas Informáticos en Red</strong></h2>
-					<ul>
-						<li><strong>Centro:</strong> I.E.S. Severo Ochoa</li>
-						<li><strong>Graduación:</strong> 2018</li>
-					</ul>
-					<h2>Beca Everis</h2>
-					<ul>
-						<li>Lugar: San Juan (Alicante)</li>
-						<li>Fecha inicio: 01/2019</li>
-						<li>Fecha Fin: 03/2019</li>
-						<li>Contenido:
+						<li>
+							<h2><strong>Bachillerato científico-técnico</strong></h2>
 							<ul>
-								<li><h5>.net Framework</h5></li>
-								<li><h5>GitHub</h5></li>
-								<li><h5>Sharepoint</h5></li>
+								<li><strong>Centro:</strong> I.E.S Carrús</li>
+								<li><strong>Graduación:</strong> 2017</li>
+							</ul>
+						</li>
+						<li v-if="selected == 'TIC'">
+							<h2><strong>Administración de Sistemas Informáticos en Red</strong></h2>
+							<ul>
+								<li><strong>Centro:</strong> I.E.S. Severo Ochoa</li>
+								<li><strong>Graduación:</strong> 2018</li>
+							</ul>
+						</li>
+						<li v-if="selected == 'TIC'">
+							<h2>Beca Everis</h2>
+							<ul>
+								<li>Lugar: San Juan (Alicante)</li>
+								<li>Fecha inicio: 01/2019</li>
+								<li>Fecha Fin: 03/2019</li>
+								<li>Contenido:
+									<ul>
+										<li><h5>.net Framework</h5></li>
+										<li><h5>GitHub</h5></li>
+										<li><h5>Sharepoint</h5></li>
+									</ul>
+								</li>
 							</ul>
 						</li>
 					</ul>
 				</dd>
 				<dd class="clear"></dd>
-				<dt class="formacion2">Formación complementaria</dt>
-				<dd>
+				<dt class="formacion2" v-if="selected == 'TIC'">Formación complementaria</dt>
+				<dd v-if="selected == 'TIC'">
 					<h2>Programación</h2>
 					<ul>
 						<li><h5>Lenguajes</h5>
@@ -87,11 +93,18 @@
 						</li>
 					</ul>
 				</dd>
+				<dd v-if="selected == 'Electrónica'">
+					<h2>Electrónica</h2>
+					<p>Reparación mantenimiento y sustitución de partes dañadas de dispositivos moviles, videoconsolas y otros elementos electrónicos</p>
+						
+					<h2>Telecomunicaciones</h2>
+					<p>Instalación y mantenimiento de infraestructuras de TV, internet y teléfono</p>
+				</dd>
 				<dd class="clear"></dd>
 				<dt class="experiencia">Experiencia profesional</dt>
 				<dd>
 					<ul>
-						<li>
+						<li v-if="selected == 'TIC'">
 							<h2>Grupo oesía </h2>
 							<ul>
 								<li>Desarrollo Backend de webservices .net en c#
@@ -108,8 +121,42 @@
 								</li>
 							</ul>
 						</li>
+						<li v-if="selected == 'Carga y descarga'">
+							<h2>Hijos de Tomás Pascual</h2>
+							<ul>
+								<li>Cargo: Mozo</li>
+								<li>Lugar: Elche</li>
+								<li>Fecha de inicio/ Fin: 2007-2015</li>
+								<li>Tareas:
+									<ul>
+										<li>Descarga/ carga camiones de pollos/ pavos</li>
+										<li>Envío de pedidos a los clientes</li>
+										<li>Encargado del reciclaje</li>
+									</ul>
+								</li>
+							</ul>
+							<h2>Ángel</h2>
+							<ul>
+								<li>Cargo: Mozo</li>
+								<li>Lugar: Mercado plaza de Madrid - Elche</li>
+								<li>Fecha de inicio/ Fin: 2014-2015</li>
+								<li>Tareas:
+									<ul>
+										<li>Descarga de camion pescado</li>
+										<li>Encargado de limpieza</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li v-if="selected == 'Hostelería'">
+							<h2>Cafetería Maryant <span>Encargado de terraza - Elche, Alicante - 2016-Actualidad</span></h2>
+							<ul>Tareas:
+								<li>Recoger terraza</li>
+								<li>Limpiar terraza</li>
+							</ul>
+						</li>
 					</ul>
-				</dd>						
+				</dd>					
 				<dd class="clear"></dd>
 				<dt class="idiomas">Idiomas</dt>
 				<dd>
@@ -143,6 +190,7 @@ export default {
   data:function(){
 		return {
 			page: 'select',
+			selected: undefined,
 		}
 	},
   methods: {},
