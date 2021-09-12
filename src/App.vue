@@ -14,12 +14,11 @@
 			</div>			
 			<div class="clear"></div>		
 			<dl>
-				<dd class="clear"></dd>				
-				<dt class="formacion">Formación académica</dt>
+				<dt id="formacion" style="height: 100px;">Formación académica</dt>
 				<dd>
 					<ul>
 						<li v-for="(academicTraining, index) in inputData.academicTraining" v-bind:key="index">
-							<h2><strong>{{ academicTraining.name }}</strong></h2>
+							<h2><strong>{{ alturaFormacion(academicTraining.name) }}</strong></h2>
 							<ul>
 								<li><strong>Centro/ Lugar: </strong>{{ academicTraining.place }}</li>
 								<li v-if="academicTraining.graduationDate"><strong>Graduación: </strong>{{ academicTraining.graduationDate }}</li>
@@ -35,14 +34,14 @@
 					</ul>
 				</dd>
 				<dd class="clear"></dd>
-				<dt class="formacion2">Formación complementaria</dt>
+				<dt id="formacion2" style="height: 0px;">Formación complementaria</dt>
 				<dd>
 					<ul>
 						<li v-for="(complementaryTraining, firstindex) in inputData.complementaryTraining" v-bind:key="firstindex">
 							<h2>{{ complementaryTraining.name }}</h2>
 							<ul>
 								<li v-for="(content, secondindex) in complementaryTraining.content" v-bind:key="secondindex">
-									<h5>{{ content.key }}</h5>
+									<h5>{{ alturaFormacion2(content.key) }}</h5>
 									<ul>
 										<li v-for="(data, thirdindex) in content.values" v-bind:key="thirdindex">{{ data }}</li>
 									</ul>
@@ -201,11 +200,24 @@ export default {
 					}
 				]
 			},
-			height: 500,
+			height: 100,
+			height2: 0,
 		}
 	},
-  methods: {},
-  mounted:function(){}
+  methods: {
+		alturaFormacion: function(data) {
+			this.height = this.height + 115;
+			return data;
+		},
+		alturaFormacion2: function(data) {
+			this.height2 = this.height2 + 125;
+			return data;
+		},
+  },
+  mounted:function(){
+		document.querySelector('#formacion').attributes.style.value = 'height:' + this.height + 'px;';
+		document.querySelector('#formacion2').attributes.style.value = 'height:' + this.height2 + 'px;';
+  }
 }
 </script>
 
@@ -229,7 +241,7 @@ ul { margin: 0 0 32px 17px; }
 dt { font-style: italic; font-weight: bold; font-size: 18px; text-align: right; padding: 0 26px 0 0; width: 150px; float: left; height: 100px; border-right: 1px solid #999;  }
 dd { width: 600px; float: right; }
 dd.clear { float: none; margin: 0; height: 15px; }
-.formacion { height: 450px; border-right: 1px solid #999; }
-.formacion2 { height: 540px; border-right: 1px solid #999; }
+.formacion { border-right: 1px solid #999; }
+.formacion2 { border-right: 1px solid #999; }
 .experiencia{ height: 210px; border-right: 1px solid #999; }
 </style>
