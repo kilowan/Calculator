@@ -1,55 +1,33 @@
 <template>
-		<form v-if="page == 'select'" action="curriculum.php" method="post" >
-			<label>Tipo</label>
-			<input v-model="selected" name="tipo" type="text" id="tipo" required>
-			<input @click="page='main'" type="submit" name="Submit" value="LOGIN">
-		</form>
-		<div v-else id="page-wrap">		
+		<div id="page-wrap">		
 			<img src="./images/foto.jpg" alt="Photo of juan" id="pic" />		
 			<div id="contact-info" class="vcard">			
-				<!-- Microformats! -->			
-				<h1 class="fn">Juan Francisco Navarro Ramiro</h1>			
+				<!-- Microformats! -->	
+				<h1 class="fn">{{ inputData.name }} {{ inputData.surname }}</h1>
 				<p>
-					Teléfono: <span class="tel">656995114</span><br />
-					Email: <a class="email" href="mailto:kilowan2@gmail.com">kilowan2@gmail.com</a>
+					Teléfono: <span class="tel">{{ inputData.phone }}</span><br />
+					Email: <a class="email" :href="'mailto:'+ inputData.email">{{ inputData.email }}</a>
 				</p>
 			</div>					
 			<div id="objective">
-				<p>
-					Busco perfeccionar mis habilidades y si es posible adquirir nuevas y a su vez perfeccionarlas también, además de aumentar a mi experiencia tanto como se pueda, mi estilo es colaborativo más que competitivo pero si hay que competir se compite.
-				</p>
+				<p>{{ inputData.description }}</p>
 			</div>			
-			<div class="clear"></div>			
+			<div class="clear"></div>		
 			<dl>
 				<dd class="clear"></dd>				
 				<dt class="formacion">Formación académica</dt>
 				<dd>
 					<ul>
-						<li>
-							<h2><strong>Bachillerato científico-técnico</strong></h2>
+						<li v-for="(academicTraining, index) in inputData.academicTraining" v-bind:key="index">
+							<h2><strong>{{ academicTraining.name }}</strong></h2>
 							<ul>
-								<li><strong>Centro:</strong> I.E.S Carrús</li>
-								<li><strong>Graduación:</strong> 2017</li>
-							</ul>
-						</li>
-						<li v-if="selected == 'TIC'">
-							<h2><strong>Administración de Sistemas Informáticos en Red</strong></h2>
-							<ul>
-								<li><strong>Centro:</strong> I.E.S. Severo Ochoa</li>
-								<li><strong>Graduación:</strong> 2018</li>
-							</ul>
-						</li>
-						<li v-if="selected == 'TIC'">
-							<h2>Beca Everis</h2>
-							<ul>
-								<li>Lugar: San Juan (Alicante)</li>
-								<li>Fecha inicio: 01/2019</li>
-								<li>Fecha Fin: 03/2019</li>
-								<li>Contenido:
+								<li><strong>Centro/ Lugar: </strong>{{ academicTraining.place }}</li>
+								<li v-if="academicTraining.graduationDate"><strong>Graduación: </strong>{{ academicTraining.graduationDate }}</li>
+								<li v-if="academicTraining.initDate"><strong>Fecha inicio: </strong>{{ academicTraining.initDate }}</li>
+								<li v-if="academicTraining.endDate"><strong>Fecha Fin: </strong>{{ academicTraining.endDate }}</li>
+								<li v-if="academicTraining.content">Contenido:
 									<ul>
-										<li><h5>.net Framework</h5></li>
-										<li><h5>GitHub</h5></li>
-										<li><h5>Sharepoint</h5></li>
+										<li v-for="(content, contentIndex) in academicTraining.content" v-bind:key="contentIndex">{{ content }}</li>
 									</ul>
 								</li>
 							</ul>
@@ -57,102 +35,35 @@
 					</ul>
 				</dd>
 				<dd class="clear"></dd>
-				<dt class="formacion2" v-if="selected == 'TIC'">Formación complementaria</dt>
-				<dd v-if="selected == 'TIC'">
-					<h2>Programación</h2>
+				<dt class="formacion2">Formación complementaria</dt>
+				<dd>
 					<ul>
-						<li><h5>Lenguajes</h5>
+						<li v-for="(complementaryTraining, firstindex) in inputData.complementaryTraining" v-bind:key="firstindex">
+							<h2>{{ complementaryTraining.name }}</h2>
 							<ul>
-								<li>Javascript</li>
-								<li>Typescript</li>
-								<li>C# (.net Framework, .net Core)</li>
-								<li>PHP</li>
-							</ul>
-						</li>
-						<li><h5>Conocimiento en Frameworks</h5>
-							<ul>
-								<li>Vue.js</li>
-								<li>jquery</li>
-								<li>bootstrap</li>
-							</ul>
-						</li>
-						<li><h5>Tecnologías de microsoft</h5>
-							<ul>
-								<li>WCF</li>
-								<li>WPF</li>
-								<li>Azure Web services</li>
-							</ul>
-						</li>
-						<li>
-							<h5>Bases de datos</h5>
-							<ul>
-								<li>MySql</li>
-								<li>Postgres</li>
-								<li>Sql Server</li>
+								<li v-for="(content, secondindex) in complementaryTraining.content" v-bind:key="secondindex">
+									<h5>{{ content.key }}</h5>
+									<ul>
+										<li v-for="(data, thirdindex) in content.values" v-bind:key="thirdindex">{{ data }}</li>
+									</ul>
+								</li>
 							</ul>
 						</li>
 					</ul>
-				</dd>
-				<dd v-if="selected == 'Electrónica'">
-					<h2>Electrónica</h2>
-					<p>Reparación mantenimiento y sustitución de partes dañadas de dispositivos moviles, videoconsolas y otros elementos electrónicos</p>
-						
-					<h2>Telecomunicaciones</h2>
-					<p>Instalación y mantenimiento de infraestructuras de TV, internet y teléfono</p>
 				</dd>
 				<dd class="clear"></dd>
 				<dt class="experiencia">Experiencia profesional</dt>
 				<dd>
 					<ul>
-						<li v-if="selected == 'TIC'">
-							<h2>Grupo oesía </h2>
+						<li v-for="(professionalExperience, firstindex) in inputData.professionalExperience" v-bind:key="firstindex">
+							<h2>{{ professionalExperience.name }}</h2>
 							<ul>
-								<li>Desarrollo Backend de webservices .net en c#
+								<li v-for="(contract, firstindex) in professionalExperience.contracts" v-bind:key="firstindex">{{ contract.name }}
 									<ul>
-										<li>Lugar: Murcia</li>
-										<li>Fecha de inicio/ Fin: 09/2019-09/2020</li>
+										<li>Lugar: {{ contract.place }}</li>
+										<li>Fecha de inicio/ Fin: {{ contract.date }}</li>
 									</ul>
 								</li>
-								<li>Desarrollo Frontend en Vue.js
-									<ul>
-										<li>Lugar: Murcia</li>
-										<li>Fecha de inicio/ Fin: 09/2010-Actualidad</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li v-if="selected == 'Carga y descarga'">
-							<h2>Hijos de Tomás Pascual</h2>
-							<ul>
-								<li>Cargo: Mozo</li>
-								<li>Lugar: Elche</li>
-								<li>Fecha de inicio/ Fin: 2007-2015</li>
-								<li>Tareas:
-									<ul>
-										<li>Descarga/ carga camiones de pollos/ pavos</li>
-										<li>Envío de pedidos a los clientes</li>
-										<li>Encargado del reciclaje</li>
-									</ul>
-								</li>
-							</ul>
-							<h2>Ángel</h2>
-							<ul>
-								<li>Cargo: Mozo</li>
-								<li>Lugar: Mercado plaza de Madrid - Elche</li>
-								<li>Fecha de inicio/ Fin: 2014-2015</li>
-								<li>Tareas:
-									<ul>
-										<li>Descarga de camion pescado</li>
-										<li>Encargado de limpieza</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li v-if="selected == 'Hostelería'">
-							<h2>Cafetería Maryant <span>Encargado de terraza - Elche, Alicante - 2016-Actualidad</span></h2>
-							<ul>Tareas:
-								<li>Recoger terraza</li>
-								<li>Limpiar terraza</li>
 							</ul>
 						</li>
 					</ul>
@@ -161,9 +72,7 @@
 				<dt class="idiomas">Idiomas</dt>
 				<dd>
 					<ul>
-						<li><strong>Inglés:</strong> equivalente a B1</li>
-						<li><strong>Valenciano:</strong> equialente a A2</li>
-						<li><strong>Español:</strong> Nativo</li>
+						<li v-for="(languages, index) in inputData.languages" v-bind:key="index"><strong>{{ languages.name }}:</strong> {{ languages.level }}</li>
 					</ul>
 				</dd>				
 				<dd class="clear"></dd>					
@@ -191,6 +100,108 @@ export default {
 		return {
 			page: 'select',
 			selected: undefined,
+			inputData: {
+				name:"Juan Francisco",
+				surname:"Navarro Ramiro",
+				phone:"656995114",
+				email:"kilowan2@gmail.com",
+				description:"Busco perfeccionar mis habilidades y si es posible adquirir nuevas y a su vez perfeccionarlas también, además de aumentar a mi experiencia tanto como se pueda, mi estilo es colaborativo más que competitivo pero si hay que competir se compite.",
+				academicTraining:[
+					{
+						name:"Bachillerato científico-técnico",
+						place:"I.E.S Carrús",
+						graduationDate:"2017"
+					},
+					{
+						name:"Administración de Sistemas Informáticos en Red",
+						place:"I.E.S. Severo Ochoa",
+						graduationDate:"2018"
+					},
+					{
+						name:"Beca Everis",
+						place:"San Juan (Alicante)",
+						initDate:"01/2019",
+						endDate: "03/2019",
+						content: [
+							".net Framework",
+							"GitHub",
+							"Sharepoint",
+						]
+					},
+				],
+				complementaryTraining:[
+					{
+						name:"Programación",
+						content:[
+							{
+								key: "Lenguajes",
+								values: [
+									"Javascript",
+									"Typescript",
+									"C# (.net Framework, .net Core)",
+									"PHP",
+								],
+							},
+							{
+								key: "Conocimiento en Frameworks",
+								values: [
+									"Vue.js",
+									"jquery",
+									"bootstrap",
+								],
+							},
+							{
+								key: "Tecnologías de microsoft",
+								values: [
+									"WCF",
+									"WPF",
+									"Azure Web services",
+								],
+							},
+							{
+								key: "Bases de datos",
+								values: [
+									"MySql",
+									"Postgres",
+									"Sql Server",
+								],
+							}
+						],
+					},
+				],
+				professionalExperience:[
+					{
+						name: "Grupo oesía",
+						contracts: [
+							{
+								name:"Desarrollo Backend de webservices .net en c#",
+								place: "Murcia",
+								date: "09/2019-09/2020",
+							},
+							{
+								name:"Desarrollo Frontend en Vue.js",
+								place: "Murcia",
+								date: "09/2010-Actualidad",
+							},
+						],
+					}
+				],
+				languages: [
+					{
+						name:"Inglés",
+						level:"Equivalente a B1",
+					},
+					{
+						name:"Valenciano",
+						level:"Equialente a A2",
+					},
+					{
+						name:"Español",
+						level:"Nativo",
+					}
+				]
+			},
+			height: 500,
 		}
 	},
   methods: {},
