@@ -1,4 +1,4 @@
-# incidences
+# Curriculum
 
 ## Project setup
 ```
