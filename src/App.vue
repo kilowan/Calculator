@@ -1,8 +1,7 @@
 <template>
 		<div id="page-wrap">		
 			<img src="./images/foto.jpg" alt="Photo of juan" id="pic" />		
-			<div id="contact-info" class="vcard">			
-				<!-- Microformats! -->	
+			<div id="contact-info" class="vcard">
 				<h1 class="fn">{{ inputData.name }} {{ inputData.surname }}</h1>
 				<p>
 					Teléfono: <span class="tel">{{ inputData.phone }}</span><br />
@@ -18,15 +17,15 @@
 				<dd>
 					<ul>
 						<li v-for="(academicTraining, index) in inputData.academicTraining" v-bind:key="index">
-							<h2><strong>{{ altura(academicTraining.name, 65, 0) }}</strong></h2>
+							<h2><strong>{{ altura(academicTraining.name, 60, 0) }}</strong></h2>
 							<ul>
 								<li><strong>Centro/ Lugar: </strong>{{ altura(academicTraining.place, 15, 0) }}</li>
-								<li v-if="academicTraining.graduationDate"><strong>Graduación: </strong>{{ altura(academicTraining.graduationDate, 15, 0) }}</li>
-								<li v-if="academicTraining.initDate"><strong>Fecha inicio: </strong>{{ altura(academicTraining.initDate, 15, 0) }}</li>
-								<li v-if="academicTraining.endDate"><strong>Fecha Fin: </strong>{{ altura(academicTraining.endDate, 15, 0) }}</li>
+								<li v-if="academicTraining.graduationDate"><strong>Graduación: </strong>{{ altura(academicTraining.graduationDate, 10, 0) }}</li>
+								<li v-if="academicTraining.initDate"><strong>Fecha inicio: </strong>{{ altura(academicTraining.initDate, 10, 0) }}</li>
+								<li v-if="academicTraining.endDate"><strong>Fecha Fin: </strong>{{ altura(academicTraining.endDate, 10, 0) }}</li>
 								<li v-if="academicTraining.content">{{ altura('Contenido', 10) }}:
 									<ul>
-										<li v-for="(content, contentIndex) in academicTraining.content" v-bind:key="contentIndex">{{ altura(content, 15, 0) }}</li>
+										<li v-for="(content, contentIndex) in academicTraining.content" v-bind:key="contentIndex">{{ altura(content, 10, 0) }}</li>
 									</ul>
 								</li>
 							</ul>
@@ -91,6 +90,7 @@
 </template>
 
 <script>
+import json from './CurriculumData.json';
 
 export default {
   name: 'App',
@@ -99,108 +99,8 @@ export default {
 		return {
 			page: 'select',
 			selected: undefined,
-			inputData: {
-				name:"Juan Francisco",
-				surname:"Navarro Ramiro",
-				phone:"656995114",
-				email:"kilowan2@gmail.com",
-				description:"Busco perfeccionar mis habilidades y si es posible adquirir nuevas y a su vez perfeccionarlas también, además de aumentar a mi experiencia tanto como se pueda, mi estilo es colaborativo más que competitivo pero si hay que competir se compite.",
-				academicTraining:[
-					{
-						name:"Bachillerato científico-técnico",
-						place:"I.E.S Carrús",
-						graduationDate:"2017"
-					},
-					{
-						name:"Administración de Sistemas Informáticos en Red",
-						place:"I.E.S. Severo Ochoa",
-						graduationDate:"2018"
-					},
-					{
-						name:"Beca Everis",
-						place:"San Juan (Alicante)",
-						initDate:"01/2019",
-						endDate: "03/2019",
-						content: [
-							".net Framework",
-							"GitHub",
-							"Sharepoint",
-						]
-					},
-				],
-				complementaryTraining:[
-					{
-						name:"Programación",
-						content:[
-							{
-								key: "Lenguajes",
-								values: [
-									"Javascript",
-									"Typescript",
-									"C# (.net Framework, .net Core)",
-									"PHP",
-								],
-							},
-							{
-								key: "Conocimiento en Frameworks",
-								values: [
-									"Vue.js",
-									"jquery",
-									"bootstrap",
-								],
-							},
-							{
-								key: "Tecnologías de microsoft",
-								values: [
-									"WCF",
-									"WPF",
-									"Azure Web services",
-								],
-							},
-							{
-								key: "Bases de datos",
-								values: [
-									"MySql",
-									"Postgres",
-									"Sql Server",
-								],
-							}
-						],
-					},
-				],
-				professionalExperience:[
-					{
-						name: "Grupo oesía",
-						contracts: [
-							{
-								name:"Desarrollo Backend de webservices .net en c#",
-								place: "Murcia",
-								date: "09/2019-09/2020",
-							},
-							{
-								name:"Desarrollo Frontend en Vue.js",
-								place: "Murcia",
-								date: "09/2010-Actualidad",
-							},
-						],
-					}
-				],
-				languages: [
-					{
-						name:"Inglés",
-						level:"Equivalente a B1",
-					},
-					{
-						name:"Valenciano",
-						level:"Equialente a A2",
-					},
-					{
-						name:"Español",
-						level:"Nativo",
-					}
-				]
-			},
-			height: [100, 0, 0],
+			inputData: json,
+			height: [115, 15, 15],
 		}
 	},
   methods: {
