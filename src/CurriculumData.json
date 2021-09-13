@@ -1,9 +1,9 @@
 {
-	"Name":"Juan Francisco",
-	"Surname":"Navarro Ramiro",
-	"Phone":"656995114",
-	"Email":"kilowan2@gmail.com",
-	"Description":"Busco perfeccionar mis habilidades y si es posible adquirir nuevas y a su vez perfeccionarlas también, además de aumentar a mi experiencia tanto como se pueda, mi estilo es colaborativo más que competitivo pero si hay que competir se compite.",
+	"name":"Juan Francisco",
+	"surname":"Navarro Ramiro",
+	"phone":"656995114",
+	"email":"kilowan2@gmail.com",
+	"description":"Busco perfeccionar mis habilidades y si es posible adquirir nuevas y a su vez perfeccionarlas también, además de aumentar a mi experiencia tanto como se pueda, mi estilo es colaborativo más que competitivo pero si hay que competir se compite.",
 	"academicTraining":[
 		{
 			"name":"Bachillerato científico-técnico",
