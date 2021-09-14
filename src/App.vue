@@ -1,143 +1,207 @@
 <template>
-		<div id="page-wrap">		
-			<img src="./images/foto.jpg" alt="Photo of juan" id="pic" />		
-			<div id="contact-info" class="vcard">
-				<h1 class="fn">{{ inputData.name }} {{ inputData.surname }}</h1>
-				<p>
-					Teléfono: <span class="tel">{{ inputData.phone }}</span><br />
-					Email: <a class="email" :href="'mailto:'+ inputData.email">{{ inputData.email }}</a>
-				</p>
-			</div>					
-			<div id="objective">
-				<p>{{ inputData.description }}</p>
-			</div>			
-			<div class="clear"></div>		
-			<dl>
-				<dt id="formacion" style="height: 100px;">Formación académica</dt>
-				<dd>
-					<ul>
-						<li v-for="(academicTraining, index) in inputData.academicTraining" v-bind:key="index">
-							<h2><strong>{{ altura(academicTraining.name, 60, 0) }}</strong></h2>
-							<ul>
-								<li><strong>Centro/ Lugar: </strong>{{ altura(academicTraining.place, 15, 0) }}</li>
-								<li v-if="academicTraining.graduationDate"><strong>Graduación: </strong>{{ altura(academicTraining.graduationDate, 10, 0) }}</li>
-								<li v-if="academicTraining.initDate"><strong>Fecha inicio: </strong>{{ altura(academicTraining.initDate, 10, 0) }}</li>
-								<li v-if="academicTraining.endDate"><strong>Fecha Fin: </strong>{{ altura(academicTraining.endDate, 10, 0) }}</li>
-								<li v-if="academicTraining.content">{{ altura('Contenido', 10) }}:
-									<ul>
-										<li v-for="(content, contentIndex) in academicTraining.content" v-bind:key="contentIndex">{{ altura(content, 10, 0) }}</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</dd>
-				<dd class="clear"></dd>
-				<dt id="formacion2" style="height: 0px;" v-if="inputData.complementaryTraining">Formación complementaria</dt>
-				<dd v-if="inputData.complementaryTraining">
-					<ul>
-						<li v-for="(complementaryTraining, firstindex) in inputData.complementaryTraining" v-bind:key="firstindex">
-							<h2>{{ altura(complementaryTraining.name, 60, 1) }}</h2>
-							<ul>
-								<li v-for="(content, secondindex) in complementaryTraining.content" v-bind:key="secondindex">
-									<h5>{{ altura(content.key, 40, 1) }}</h5>
-									<ul>
-										<li v-for="(data, thirdindex) in content.values" v-bind:key="thirdindex">{{ altura(data, 20, 1) }}</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</dd>
-				<dd class="clear"></dd>
-				<dt style="height: 0px;" id="experiencia" v-if="inputData.professionalExperience">Experiencia profesional</dt>
-				<dd v-if="inputData.professionalExperience">
-					<ul>
-						<li v-for="(professionalExperience, firstindex) in inputData.professionalExperience" v-bind:key="firstindex">
-							<h2>{{ altura(professionalExperience.name, 70, 2) }}</h2>
-							<ul>
-								<li v-for="(contract, firstindex) in professionalExperience.contracts" v-bind:key="firstindex">{{ altura(contract.name, 30, 2) }}
-									<ul>
-										<li>Lugar: {{ altura(contract.place, 20, 2) }}</li>
-										<li>Fecha de inicio/ Fin: {{ altura(contract.date, 10, 2) }}</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</dd>					
-				<dd class="clear"></dd>
-				<dt class="idiomas">Idiomas</dt>
-				<dd>
-					<ul>
-						<li v-for="(languages, index) in inputData.languages" v-bind:key="index"><strong>{{ languages.name }}:</strong> {{ languages.level }}</li>
-					</ul>
-				</dd>				
-				<dd class="clear"></dd>					
-				<dt class="otros">Otros datos</dt>
-				<dd>
-					<ul>
-						<li>Disponibilidad horaria</li>
-						<li>Puntualidad, responsabilidad y constancia</li>
-						<li>Incorporación inmediata</li>
-						<li>Disponibilidad de cambio de domicilio</li>
-					</ul>
-				</dd>					
-				<dd class="clear"></dd>
-			</dl>
-			<dd class="clear"></dd>
-		</div>
+	<div v-if="!calcula">
+		<h1><p align="center">Calculadora de conversión</p></h1>
+		<h3><p align="center">Introduce cualquier numero decimal, hexadecimal o binario y se calculará automáticamente al resto de unidades. (ej: de binario a decimal)</p></h3> 
+		<input type="text" v-model="number" >
+		<button @click="calcula = true">calcula</button>
+	</div>
+	<div v-else>
+		<h2><p>Origen binario:</p></h2>
+		<p>El numero {{ number }} en decimal es {{ number }}</p>
+		<p>El numero {{ number }} en Hexadecimal es {{ number }}</p>
+
+		<h2><p>Origen decimal:</p></h2>
+		<p>El numero {{ number }} en binario es {{ number }}</p>
+		<p>El numero {{ number }} en Hexadecimal es {{ number }}</p>
+
+		<h2><p>Origen hexadecimal:</p></h2>
+		<p>El numero {{ number }} en Binario es {{ number }}</p>
+		<p>El numero {{ number }} en Decimal es {{ number }}</p>
+		<button @click="calcula = false, number = undefined">Atrás</button>
+	</div>
 </template>
 
 <script>
-import json from './CurriculumData.json';
 
 export default {
   name: 'App',
   components: {},
   data:function(){
 		return {
-			page: 'select',
-			selected: undefined,
-			inputData: json,
-			height: [115, 15, 15],
+			add: 0,
+			var2: "",
+			number: undefined,
+			calcula: false,
 		}
 	},
   methods: {
-		altura: function(data, size, id) {
-			this.height[id] = this.height[id] + size;
-			return data;
-		},
+	caracter: function(number) {
+		for(; number[this.add]!=='' ; this.add++)	{
+			//hola
+		}
+
+		return this.add;
+	},
+	//1.1 - Decimal a binario
+	deciabin: function(number) {
+		let resultado = '';
+		while(number > 0) {
+			let resto = number%2;
+			number = Math.floor(number, 2);
+			resultado = resto + resultado;
+		}
+
+		return resultado;
+	},
+	//1.2 - Binario a decimal
+	binadeci: function(number) {
+		let bin = "0";
+		for(let fn="0", i = this.caracter(number)-1,i2 = fn; i >= fn; i--, i2++) {
+			bin = bin + number[i2] * Math.pow(2, i);
+		}
+
+		return bin;
+	},
+	//1.3 - Binario a hexadecimal
+	binahexa: function(number) {
+		let resto;
+		let hexa = 0;
+		let cont = 0;
+		for(let cifra = 0; number>=10;cont++) {
+			cifra = number%10;
+			if(cifra > 0)
+			{
+				hexa += Math.pow(2, cont);
+			}
+			number = Math.floor(number, 10);
+		}
+		if(number > 0)
+		{
+			hexa += Math.pow(2,cont);
+		}
+		let resultado = "";
+		while(hexa > 0)
+		{
+			resto = hexa%16;
+			hexa = Math.floor(hexa, 16);
+			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9"){
+				resultado = resto + resultado;
+			} else if(resto == "10") {
+				resultado="A" + resultado;
+			} else if(resto=="11")	{
+				resultado="B" + resultado;
+			} else if(resto=="12")	{
+				resultado="C" + resultado;
+			} else if(resto=="13")	{
+				resultado="D" + resultado;
+			} else if(resto=="14")	{
+				resultado="E" + resultado;
+			} else if(resto=="15") {
+				resultado="F" + resultado;
+			}
+		}
+		return resultado;
+	},
+	//1.4 - Decimal a hexadecimal
+	decihexa: function(number) {
+		let resultado = "";
+		while(number > 0) {
+			let resto = number%16;
+			number = Math.floor(number,16);
+			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9") {
+				resultado = resto + resultado;
+			} else if(resto == "10") {
+				resultado = "A" + resultado;
+			} else if(resto == "11") {
+				resultado="B" + resultado;
+			} else if(resto == "12") {
+				resultado="C" + resultado;
+			} else if(resto == "13") {
+				resultado = "D" + resultado;
+			} else if(resto == "14") {
+				resultado = "E" + resultado;
+			} else if(resto == "15") {
+				resultado = "F" + resultado;
+			}
+		}
+		return resultado;
+	},
+	//1.5 - Hexadecimal a binario
+	hexabin: function(number) {
+		let binario = "";
+		for(let i = 0; i < this.caracter(number); i++)
+		{
+			if(number[i]=="0") {
+				binario = binario + "0000";
+			} else if(number[i] == "1"){
+				binario = binario + "0001";
+			} else if(number[i] == "2")	{
+				binario = binario + "0010";
+			} else if(number[i] == "3")	{
+				binario = binario + "0011";
+			} else if(number[i] == "4")	{
+				binario = binario + "0100";
+			} else if(number[i] == "5")	{
+				binario = binario + "0101";
+			} else if(number[i] == "6")	{
+				binario = binario + "0110";
+			} else if(number[i] == "7")	{
+				binario = binario + "0111";
+			} else if(number[i] == "8"){
+				binario = binario + "1000";
+			} else if(number[i] == "9")	{
+				binario = binario + "1001";
+			} else if(number[i] == "A" || number[i] == "a")	{
+				binario = binario + "1010";
+			} else if(number[i] == "B" || number[i] == "b")	{
+				binario = binario + "1011";
+			} else if(number[i] == "C" || number[i] == "c")	{
+				binario = binario + "1100";
+			} else if(number[i] == "D" || number[i] == "d")	{
+				binario = binario + "1101";
+			} else if(number[i] == "E" || number[i] == "e")	{
+				binario = binario + "1110";
+			} else if(number[i] == "F" || number[i] == "f")	{
+				binario = binario + "1111";
+			}
+		}
+		return binario;
+	},
+	//1.6 - Hexadecimal a decimal
+	hexadeci: function(number)
+	{
+		let dec = "0";
+		let valor;
+		for(let fn = "0", i = this.caracter(number)-1, i2 = fn; i >= fn; i--, i2++)
+		{
+			//let values = [{'A': '10'}, {'B': '11'}, {'C': '12'}, {'D': '13'}, {'E': '14'}, {'F': '15'}, {'0': '0'}, {'1': '1'}, {'2': '2'}, {'3': '3'}, {'4': '4'}, {'5': '5'}, {'6': '6'}, {'7': '7'}, {'8': '8'}, {'9': '9'}];
+			//let tempValue = number[i2].toUpperCase()
+			//let valor = values[tempValue];
+
+			if(number[i2] == "0" || number[i2] == "1" || number[i2] == "2" || number[i2] =="3" || number[i2] == "4" || number[i2] == "5" || number[i2] == "6" || number[i2] == "7" || number[i2] == "8" || number[i2] == "9") {
+				valor = number[i2];
+			} else if(number[i2] == "A" || number[i2] == "a") {
+				valor="10";
+			} else if(number[i2] == "B" || number[i2] == "b") {
+				valor="11";
+			} else if(number[i2] == "C" || number[i2] == "c") {
+				valor="12";
+			} else if(number[i2] == "D" || number[i2] == "d") {
+				valor="13";
+			} else if(number[i2] == "E" || number[i2] == "e") {
+				valor="14";
+			} else if(number[i2] == "F" || number[i2] == "f") {
+				valor="15";
+			}
+			dec = dec + valor * Math.pow(16, i);
+		}
+		return dec;
+	},
   },
   mounted:function(){
-		document.querySelector('#formacion').attributes.style.value = 'height:' + this.height[0] + 'px;';
-		document.querySelector('#formacion2').attributes.style.value = 'height:' + this.height[1] + 'px;';
-		document.querySelector('#experiencia').attributes.style.value = 'height:' + this.height[2] + 'px;';
+	//this.number = this.hexadeci('A');
   }
 }
 </script>
 
-<style>
-* { margin: 0; padding: 0; }
-body { font: 16px Helvetica, Sans-Serif; line-height: 24px; background: url(./images/noise.jpg); }
-.clear { clear: both; }
-.idiomas { height: 80px; border-right: 1px solid #999; }
-.otros { height: 110px; border-right: 1px solid #999; }
-#page-wrap { width: 1000px; margin: 40px auto 60px; }
-#pic { float: right; margin: -30px 0 0 0; height: 100px; }
-h1 { margin: 0 0 16px 0; padding: 0 0 16px 0; font-size: 34px; font-weight: bold; letter-spacing: -2px; border-bottom: 1px solid #999; }
-h2 { font-size: 20px; margin: 0 0 6px 0; position: relative; }
-h2 span { position: absolute; bottom: 0; right: 0; font-style: italic; font-family: Georgia, Serif; font-size: 16px; color: #999; font-weight: normal; }
-p { margin: 0 0 16px 0; }
-a { color: #999; text-decoration: none; border-bottom: 1px dotted #999; }
-a:hover { border-bottom-style: solid; color: black; }
-ul { margin: 0 0 32px 17px; }
-#objective { width: 100%; float: left; }
-#objective p { font-family: Georgia, Serif; font-style: italic; color: #666; }
-dt { font-style: italic; font-weight: bold; font-size: 18px; text-align: right; padding: 0 26px 0 0; width: 150px; float: left; height: 100px; border-right: 1px solid #999;  }
-dd { width: 800px; float: right; }
-dd.clear { float: none; margin: 0; height: 15px; }
-.formacion { border-right: 1px solid #999; }
-.formacion2 { border-right: 1px solid #999; }
-.experiencia{ border-right: 1px solid #999; }
-</style>
+<style></style>
