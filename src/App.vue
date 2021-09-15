@@ -1,27 +1,28 @@
 <template>
-	<div v-if="!calcula">
-		<h1><p align="center">Calculadora de conversión</p></h1>
-		<h3><p align="center">Introduce cualquier numero decimal, hexadecimal o binario y se calculará automáticamente al resto de unidades. (ej: de binario a decimal)</p></h3> 
-		<input type="text" required v-model="number" >
-		<button @click="calcula = true, checkNumber(number)">calcula</button>
-	</div>
-	<div v-else>
-		<div v-if="result.includes('binario')">
-			<h2><p>Origen binario:</p></h2>
-			<p>El numero {{ number }} en decimal es {{ all? number : binadeci(number) }}</p>
-			<p>El numero {{ number }} en Hexadecimal es {{ all? number : binahexa(number) }}</p>
+	<div>
+		<h1><p style="text-align: center;">Calculadora de conversión</p></h1>
+		<h3><p style="text-align: center;">Introduce cualquier numero decimal, hexadecimal o binario y se calculará automáticamente al resto de unidades. (ej: de binario a decimal)</p></h3> 
+		<div style="text-align: center;">
+			<div v-if="calcula">
+				<div v-if="result.includes('binario')">
+					<h2><p>Origen binario:</p></h2>
+					<p>El numero {{ number }} en decimal es {{ all? number : binadeci(number) }}</p>
+					<p>El numero {{ number }} en Hexadecimal es {{ all? number : binahexa(number) }}</p>
+				</div>
+				<div v-if="result.includes('decimal')">
+					<h2><p>Origen decimal:</p></h2>
+					<p>El numero {{ number }} en binario es {{ all? number : deciabin(number) }}</p>
+					<p>El numero {{ number }} en Hexadecimal es {{ all? number : decihexa(number) }}</p>
+				</div>
+				<div v-if="result.includes('hexadecimal')">
+					<h2><p>Origen hexadecimal:</p></h2>
+					<p>El numero {{ number }} en Binario es {{ all? number : hexabin(number) }}</p>
+					<p>El numero {{ number }} en Decimal es {{ all? number : hexadeci(number) }}</p>
+				</div>
+			</div>
+			<input @input="reset()" type="text" required v-model="number"/>
+			<button @click="reset(), calcula = true, checkNumber(number)">calcula</button>
 		</div>
-		<div v-if="result.includes('decimal')">
-			<h2><p>Origen decimal:</p></h2>
-			<p>El numero {{ number }} en binario es {{ all? number : deciabin(number) }}</p>
-			<p>El numero {{ number }} en Hexadecimal es {{ all? number : decihexa(number) }}</p>
-		</div>
-		<div v-if="result.includes('hexadecimal')">
-			<h2><p>Origen hexadecimal:</p></h2>
-			<p>El numero {{ number }} en Binario es {{ all? number : hexabin(number) }}</p>
-			<p>El numero {{ number }} en Decimal es {{ all? number : hexadeci(number) }}</p>
-		</div>
-		<button @click="reset()">Atrás</button>
 	</div>
 </template>
 
@@ -45,7 +46,6 @@ export default {
   methods: {
 	reset: function() {
 			this.add = 0;
-			this.number = undefined;
 			this.calcula = false;
 			this.result = [];
 			this.error = undefined;
@@ -110,12 +110,12 @@ export default {
 	},
 	//1.2 - Binario a decimal
 	binadeci: function(number) {
-		let bin = "0";
-		for(let fn="0", i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++) {
+		let bin = 0;
+		for(let fn = 0, i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++) {
 			bin = bin + number[i2] * Math.pow(2, i);
 		}
 
-		return bin;
+		return bin.toString();
 	},
 	//1.3 - Binario a hexadecimal
 	binahexa: function(number) {
@@ -225,15 +225,15 @@ export default {
 	//1.6 - Hexadecimal a decimal
 	hexadeci: function(number)
 	{
-		let dec = 0;
+		let dec = '0';
 		let valor;
-		for(let fn = 0, i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++)
+		for(let fn = '0', i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++)
 		{
 			let tempValue = number[i2].toUpperCase();
-			valor = this.hexDecValues[tempValue];
+			valor = this.hexDecValues.indexOf(tempValue);
 			dec = dec + valor * Math.pow(16, i);
 		}
-		return dec.toString();
+		return parseInt(dec);
 	},
 
   },
