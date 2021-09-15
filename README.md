@@ -1,4 +1,4 @@
-# Curriculum
+# Calculator
 
 ## Project setup
 ```

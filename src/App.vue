@@ -2,22 +2,26 @@
 	<div v-if="!calcula">
 		<h1><p align="center">Calculadora de conversión</p></h1>
 		<h3><p align="center">Introduce cualquier numero decimal, hexadecimal o binario y se calculará automáticamente al resto de unidades. (ej: de binario a decimal)</p></h3> 
-		<input type="text" v-model="number" >
-		<button @click="calcula = true">calcula</button>
+		<input type="text" required v-model="number" >
+		<button @click="calcula = true, checkNumber(number)">calcula</button>
 	</div>
 	<div v-else>
-		<h2><p>Origen binario:</p></h2>
-		<p>El numero {{ number }} en decimal es {{ number }}</p>
-		<p>El numero {{ number }} en Hexadecimal es {{ number }}</p>
-
-		<h2><p>Origen decimal:</p></h2>
-		<p>El numero {{ number }} en binario es {{ number }}</p>
-		<p>El numero {{ number }} en Hexadecimal es {{ number }}</p>
-
-		<h2><p>Origen hexadecimal:</p></h2>
-		<p>El numero {{ number }} en Binario es {{ number }}</p>
-		<p>El numero {{ number }} en Decimal es {{ number }}</p>
-		<button @click="calcula = false, number = undefined">Atrás</button>
+		<div v-if="result.includes('binario')">
+			<h2><p>Origen binario:</p></h2>
+			<p>El numero {{ number }} en decimal es {{ all? number : binadeci(number) }}</p>
+			<p>El numero {{ number }} en Hexadecimal es {{ all? number : binahexa(number) }}</p>
+		</div>
+		<div v-if="result.includes('decimal')">
+			<h2><p>Origen decimal:</p></h2>
+			<p>El numero {{ number }} en binario es {{ all? number : deciabin(number) }}</p>
+			<p>El numero {{ number }} en Hexadecimal es {{ all? number : decihexa(number) }}</p>
+		</div>
+		<div v-if="result.includes('hexadecimal')">
+			<h2><p>Origen hexadecimal:</p></h2>
+			<p>El numero {{ number }} en Binario es {{ all? number : hexabin(number) }}</p>
+			<p>El numero {{ number }} en Decimal es {{ all? number : hexadeci(number) }}</p>
+		</div>
+		<button @click="reset()">Atrás</button>
 	</div>
 </template>
 
@@ -29,25 +33,76 @@ export default {
   data:function(){
 		return {
 			add: 0,
-			var2: "",
 			number: undefined,
 			calcula: false,
+			result: [],
+			error: undefined,
+			all: false,
+			hexDecValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+			decValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
 		}
 	},
   methods: {
-	caracter: function(number) {
-		for(; number[this.add]!=='' ; this.add++)	{
-			//hola
+	reset: function() {
+			this.add = 0;
+			this.number = undefined;
+			this.calcula = false;
+			this.result = [];
+			this.error = undefined;
+			this.all = false;
+	},
+	checkNumber: function(number) {
+		//2 - Comprobaciones
+		if(number == "0" || number == "1") {
+			this.result.push('binario', 'decimal', 'hexadecimal');
+			this.all = true;
+		} else if(number != "0") {
+			let data = "";
+			//Binario
+			for(let i = "0"; i <= number.toString().length-1; i++)	{
+				if(number[i] == "0" || number[i] == "1")
+				{
+					data = data + "*";
+				}
+			}
+			if(data.toString().length == number.toString().length)	{
+				this.result.push('binario');
+			}
+			//Decimal
+			data = "";
+			for(let i = "0"; i <= number.toString().length-1; i++)	{
+				
+				if(this.decValues.includes(number[i])) {
+					data = data + "*";
+				}
+			}
+			if(data.toString().length == number.toString().length) {
+				this.result.push('decimal');
+			}
+			//Hexadecimal
+			data = "";
+			for(let i = "0"; i <= number.toString().length-1; i++)	{
+				let tmpValue = number[i].toUpperCase();
+				
+				if(this.hexDecValues.includes(tmpValue)) {
+					data = data + "*";
+				}
+				else
+				{
+					this.error += number[i];
+				}
+			}
+			if(data.toString().length == number.toString().length) {
+				this.result.push('hexadecimal');
+			}
 		}
-
-		return this.add;
 	},
 	//1.1 - Decimal a binario
 	deciabin: function(number) {
 		let resultado = '';
 		while(number > 0) {
 			let resto = number%2;
-			number = Math.floor(number, 2);
+			number = Math.trunc(number/2);
 			resultado = resto + resultado;
 		}
 
@@ -56,7 +111,7 @@ export default {
 	//1.2 - Binario a decimal
 	binadeci: function(number) {
 		let bin = "0";
-		for(let fn="0", i = this.caracter(number)-1,i2 = fn; i >= fn; i--, i2++) {
+		for(let fn="0", i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++) {
 			bin = bin + number[i2] * Math.pow(2, i);
 		}
 
@@ -73,7 +128,7 @@ export default {
 			{
 				hexa += Math.pow(2, cont);
 			}
-			number = Math.floor(number, 10);
+			number = Math.trunc(number/10);
 		}
 		if(number > 0)
 		{
@@ -83,7 +138,7 @@ export default {
 		while(hexa > 0)
 		{
 			resto = hexa%16;
-			hexa = Math.floor(hexa, 16);
+			hexa = Math.trunc(hexa/16);
 			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9"){
 				resultado = resto + resultado;
 			} else if(resto == "10") {
@@ -107,7 +162,7 @@ export default {
 		let resultado = "";
 		while(number > 0) {
 			let resto = number%16;
-			number = Math.floor(number,16);
+			number = Math.trunc(number/16);
 			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9") {
 				resultado = resto + resultado;
 			} else if(resto == "10") {
@@ -129,7 +184,7 @@ export default {
 	//1.5 - Hexadecimal a binario
 	hexabin: function(number) {
 		let binario = "";
-		for(let i = 0; i < this.caracter(number); i++)
+		for(let i = 0; i < number.toString().length; i++)
 		{
 			if(number[i]=="0") {
 				binario = binario + "0000";
@@ -170,37 +225,19 @@ export default {
 	//1.6 - Hexadecimal a decimal
 	hexadeci: function(number)
 	{
-		let dec = "0";
+		let dec = 0;
 		let valor;
-		for(let fn = "0", i = this.caracter(number)-1, i2 = fn; i >= fn; i--, i2++)
+		for(let fn = 0, i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++)
 		{
-			//let values = [{'A': '10'}, {'B': '11'}, {'C': '12'}, {'D': '13'}, {'E': '14'}, {'F': '15'}, {'0': '0'}, {'1': '1'}, {'2': '2'}, {'3': '3'}, {'4': '4'}, {'5': '5'}, {'6': '6'}, {'7': '7'}, {'8': '8'}, {'9': '9'}];
-			//let tempValue = number[i2].toUpperCase()
-			//let valor = values[tempValue];
-
-			if(number[i2] == "0" || number[i2] == "1" || number[i2] == "2" || number[i2] =="3" || number[i2] == "4" || number[i2] == "5" || number[i2] == "6" || number[i2] == "7" || number[i2] == "8" || number[i2] == "9") {
-				valor = number[i2];
-			} else if(number[i2] == "A" || number[i2] == "a") {
-				valor="10";
-			} else if(number[i2] == "B" || number[i2] == "b") {
-				valor="11";
-			} else if(number[i2] == "C" || number[i2] == "c") {
-				valor="12";
-			} else if(number[i2] == "D" || number[i2] == "d") {
-				valor="13";
-			} else if(number[i2] == "E" || number[i2] == "e") {
-				valor="14";
-			} else if(number[i2] == "F" || number[i2] == "f") {
-				valor="15";
-			}
+			let tempValue = number[i2].toUpperCase();
+			valor = this.hexDecValues[tempValue];
 			dec = dec + valor * Math.pow(16, i);
 		}
-		return dec;
+		return dec.toString();
 	},
+
   },
-  mounted:function(){
-	//this.number = this.hexadeci('A');
-  }
+  mounted:function(){}
 }
 </script>
 
