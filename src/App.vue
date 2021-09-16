@@ -41,6 +41,7 @@ export default {
 			all: false,
 			hexDecValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
 			decValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+			hexaBinValues: {0: '0000', 1: '0001', 2: '0010', 3: '0011', 4: '0100', 5: '0101', 6:'0110', 7:'0111', 8:'1000', 9:'1001', A:'1010', B:'1011', C:'1100', D:'1101', E:'1110', F:'1111'},
 		}
 	},
   methods: {
@@ -110,8 +111,8 @@ export default {
 	},
 	//1.2 - Binario a decimal
 	binadeci: function(number) {
-		let bin = 0;
-		for(let fn = 0, i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++) {
+		let bin = '0';
+		for(let fn = '0', i = (number.toString().length-1).toString(), i2 = fn; i >= fn; i--, i2++) {
 			bin = bin + number[i2] * Math.pow(2, i);
 		}
 
@@ -119,7 +120,6 @@ export default {
 	},
 	//1.3 - Binario a hexadecimal
 	binahexa: function(number) {
-		let resto;
 		let hexa = 0;
 		let cont = 0;
 		for(let cifra = 0; number>=10;cont++) {
@@ -134,28 +134,7 @@ export default {
 		{
 			hexa += Math.pow(2,cont);
 		}
-		let resultado = "";
-		while(hexa > 0)
-		{
-			resto = hexa%16;
-			hexa = Math.trunc(hexa/16);
-			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9"){
-				resultado = resto + resultado;
-			} else if(resto == "10") {
-				resultado="A" + resultado;
-			} else if(resto=="11")	{
-				resultado="B" + resultado;
-			} else if(resto=="12")	{
-				resultado="C" + resultado;
-			} else if(resto=="13")	{
-				resultado="D" + resultado;
-			} else if(resto=="14")	{
-				resultado="E" + resultado;
-			} else if(resto=="15") {
-				resultado="F" + resultado;
-			}
-		}
-		return resultado;
+		return this.decihexa(hexa);
 	},
 	//1.4 - Decimal a hexadecimal
 	decihexa: function(number) {
@@ -166,7 +145,7 @@ export default {
 			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9") {
 				resultado = resto + resultado;
 			} else if(resto == "10") {
-				resultado = "A" + resultado;
+				resultado =+ "A" + resultado;
 			} else if(resto == "11") {
 				resultado="B" + resultado;
 			} else if(resto == "12") {
@@ -186,54 +165,22 @@ export default {
 		let binario = "";
 		for(let i = 0; i < number.toString().length; i++)
 		{
-			if(number[i]=="0") {
-				binario = binario + "0000";
-			} else if(number[i] == "1"){
-				binario = binario + "0001";
-			} else if(number[i] == "2")	{
-				binario = binario + "0010";
-			} else if(number[i] == "3")	{
-				binario = binario + "0011";
-			} else if(number[i] == "4")	{
-				binario = binario + "0100";
-			} else if(number[i] == "5")	{
-				binario = binario + "0101";
-			} else if(number[i] == "6")	{
-				binario = binario + "0110";
-			} else if(number[i] == "7")	{
-				binario = binario + "0111";
-			} else if(number[i] == "8"){
-				binario = binario + "1000";
-			} else if(number[i] == "9")	{
-				binario = binario + "1001";
-			} else if(number[i] == "A" || number[i] == "a")	{
-				binario = binario + "1010";
-			} else if(number[i] == "B" || number[i] == "b")	{
-				binario = binario + "1011";
-			} else if(number[i] == "C" || number[i] == "c")	{
-				binario = binario + "1100";
-			} else if(number[i] == "D" || number[i] == "d")	{
-				binario = binario + "1101";
-			} else if(number[i] == "E" || number[i] == "e")	{
-				binario = binario + "1110";
-			} else if(number[i] == "F" || number[i] == "f")	{
-				binario = binario + "1111";
-			}
+			let tmpValue = number[i].toUpperCase();
+			binario += this.hexaBinValues[tmpValue];
 		}
 		return binario;
 	},
 	//1.6 - Hexadecimal a decimal
 	hexadeci: function(number)
 	{
-		let dec = '0';
+		let dec = 0;
 		let valor;
-		for(let fn = '0', i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++)
-		{
+		for(let fn = 0, i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++) {
 			let tempValue = number[i2].toUpperCase();
 			valor = this.hexDecValues.indexOf(tempValue);
-			dec = dec + valor * Math.pow(16, i);
+			dec += (parseInt(valor) * Math.pow(16, i));
 		}
-		return parseInt(dec);
+		return dec;
 	},
 
   },
