@@ -39,8 +39,10 @@ export default {
 			result: [],
 			error: undefined,
 			all: false,
-			hexDecValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+			binValues: ['0', '1'],
 			decValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+			hexDecValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+			hexValues: {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', A: '10', B: '11', C: '12', D: '13', E: '14', F: '15'},
 			hexaBinValues: {0: '0000', 1: '0001', 2: '0010', 3: '0011', 4: '0100', 5: '0101', 6:'0110', 7:'0111', 8:'1000', 9:'1001', A:'1010', B:'1011', C:'1100', D:'1101', E:'1110', F:'1111'},
 		}
 	},
@@ -54,49 +56,32 @@ export default {
 	},
 	checkNumber: function(number) {
 		//2 - Comprobaciones
-		if(number == "0" || number == "1") {
+		if(this.binValues.includes(number)) {
 			this.result.push('binario', 'decimal', 'hexadecimal');
 			this.all = true;
 		} else if(number != "0") {
 			let data = "";
 			//Binario
 			for(let i = "0"; i <= number.toString().length-1; i++)	{
-				if(number[i] == "0" || number[i] == "1")
-				{
-					data = data + "*";
-				}
+				if(this.binValues.includes(number[i]))	data = data + "*";
 			}
-			if(data.toString().length == number.toString().length)	{
-				this.result.push('binario');
-			}
+			if(data.toString().length == number.toString().length)	this.result.push('binario');
 			//Decimal
 			data = "";
 			for(let i = "0"; i <= number.toString().length-1; i++)	{
-				
-				if(this.decValues.includes(number[i])) {
-					data = data + "*";
-				}
+				if(this.decValues.includes(number[i])) data = data + "*";
 			}
-			if(data.toString().length == number.toString().length) {
-				this.result.push('decimal');
-			}
+			if(data.toString().length == number.toString().length) this.result.push('decimal');
 			//Hexadecimal
 			data = "";
 			for(let i = "0"; i <= number.toString().length-1; i++)	{
 				let tmpValue = number[i].toUpperCase();
 				
-				if(this.hexDecValues.includes(tmpValue)) {
-					data = data + "*";
-				}
-				else
-				{
-					this.error += number[i];
-				}
+				if(this.hexDecValues.includes(tmpValue)) data = data + "*";	
+				else this.error += number[i];
 			}
-			if(data.toString().length == number.toString().length) {
-				this.result.push('hexadecimal');
-			}
-		}
+			if(data.toString().length == number.toString().length) this.result.push('hexadecimal');
+		} else this.error = true;
 	},
 	//1.1 - Decimal a binario
 	deciabin: function(number) {
@@ -130,10 +115,7 @@ export default {
 			}
 			number = Math.trunc(number/10);
 		}
-		if(number > 0)
-		{
-			hexa += Math.pow(2,cont);
-		}
+		if(number > 0)	hexa += Math.pow(2,cont);
 		return this.decihexa(hexa);
 	},
 	//1.4 - Decimal a hexadecimal
@@ -142,21 +124,7 @@ export default {
 		while(number > 0) {
 			let resto = number%16;
 			number = Math.trunc(number/16);
-			if(resto == "0" || resto == "1" || resto == "2" || resto == "3" || resto == "4" || resto == "5" || resto == "6" || resto == "7" || resto == "8" || resto == "9") {
-				resultado = resto + resultado;
-			} else if(resto == "10") {
-				resultado =+ "A" + resultado;
-			} else if(resto == "11") {
-				resultado="B" + resultado;
-			} else if(resto == "12") {
-				resultado="C" + resultado;
-			} else if(resto == "13") {
-				resultado = "D" + resultado;
-			} else if(resto == "14") {
-				resultado = "E" + resultado;
-			} else if(resto == "15") {
-				resultado = "F" + resultado;
-			}
+			if(this.hexValues[resto]) resultado = this.hexValues[resto] + resultado;
 		}
 		return resultado;
 	},
@@ -182,10 +150,8 @@ export default {
 		}
 		return dec;
 	},
-
   },
   mounted:function(){}
 }
 </script>
-
 <style></style>
