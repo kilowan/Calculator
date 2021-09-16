@@ -81,7 +81,7 @@ export default {
 				else this.error += number[i];
 			}
 			if(data.toString().length == number.toString().length) this.result.push('hexadecimal');
-		} else this.error = true;
+		} else this.error += number;
 	},
 	//1.1 - Decimal a binario
 	deciabin: function(number) {
