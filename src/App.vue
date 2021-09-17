@@ -41,9 +41,9 @@ export default {
 			all: false,
 			binValues: ['0', '1'],
 			decValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-			hexDecValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
-			hexValues: {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', A: '10', B: '11', C: '12', D: '13', E: '14', F: '15'},
-			hexaBinValues: {0: '0000', 1: '0001', 2: '0010', 3: '0011', 4: '0100', 5: '0101', 6:'0110', 7:'0111', 8:'1000', 9:'1001', A:'1010', B:'1011', C:'1100', D:'1101', E:'1110', F:'1111'},
+			decHexValues: {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 'A': '10', 'B': '11', 'C': '12', 'D': '13', 'E': '14', 'F': '15'},
+			hexValues: {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'},
+			hexaBinValues: {'0': '0000', '1': '0001', '2': '0010', '3': '0011', '4': '0100', '5': '0101', '6':'0110', '7':'0111', '8':'1000', '9':'1001', 'A':'1010', 'B':'1011', 'C':'1100', 'D':'1101', 'E':'1110', 'F':'1111'},
 		}
 	},
   methods: {
@@ -77,7 +77,7 @@ export default {
 			for(let i = "0"; i <= number.toString().length-1; i++)	{
 				let tmpValue = number[i].toUpperCase();
 				
-				if(this.hexDecValues.includes(tmpValue)) data = data + "*";	
+				if(this.hexValues[tmpValue]) data = data + "*"; 
 				else this.error += number[i];
 			}
 			if(data.toString().length == number.toString().length) this.result.push('hexadecimal');
@@ -145,7 +145,7 @@ export default {
 		let valor;
 		for(let fn = 0, i = number.toString().length-1, i2 = fn; i >= fn; i--, i2++) {
 			let tempValue = number[i2].toUpperCase();
-			valor = this.hexDecValues.indexOf(tempValue);
+			valor = this.decHexValues[tempValue];
 			dec += (parseInt(valor) * Math.pow(16, i));
 		}
 		return dec;
