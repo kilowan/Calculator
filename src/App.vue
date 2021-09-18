@@ -20,7 +20,7 @@
 					<p>El numero {{ number }} en Decimal es {{ all? number : parseInt(number, 16) }}</p>
 				</div>
 				<div v-if="result.length == 0">
-					<h2><p>Carácter incorrecto</p></h2>
+					<h2><p>Carácter incorrecto {{ error }}</p></h2>
 				</div>
 			</div>
 			<input @input="reset()" type="text" required v-model="number"/>
@@ -68,38 +68,33 @@ export default {
 			data = this.characherVerifier(number, this.decValues);
 			if(data.toString().length == number.toString().length) this.result.push('decimal');
 			//Hexadecimal
-			data = this.characherVerifier(number.toUpperCase(), this.HexValues);
+			data = this.characherVerifier(number.toUpperCase(), this.HexValues, true);
 			if(data.toString().length == number.toString().length) this.result.push('hexadecimal');
 		} else this.error += number;
 	},
-	characherVerifier(number, array) {
+	characherVerifier: function(number, array, last = false) {
 		let data = '';
 		for(let i = "0"; i <= number.toString().length-1; i++)	{
 			if(array.includes(number[i])) data = data + "*";
+			else last? this.error += number[i]: this.error = '';
 		}
 		return data;
 	},
-	//1.1 - Decimal a binario
-	deciabin: function(number) {
-		let resultado = '';
-		while(number > 0) {
-			let resto = number%2;
-			number = Math.trunc(number/2);
-			resultado = resto + resultado;
-		}
-
-		return resultado;
-	},
-	//1.4 - Decimal a hexadecimal
-	decihexa: function(number) {
+	//changeBase dec to hexa/bin
+	changeBase: function(number, array, base) {
 		let resultado = "";
 		while(number > 0) {
-			let resto = number%16;
-			number = Math.trunc(number/16);
-			resultado = this.HexValues[resto] + resultado;
+			let resto = number%base;
+			number = Math.trunc(number/base);
+			resultado = array[resto] + resultado;
 		}
-		return resultado;
+
+		return resultado.toString();
 	},
+	//1.1 - Decimal a binario
+	deciabin: function(number) { return this.changeBase(number, this.binValues, 2);	},
+	//1.4 - Decimal a hexadecimal
+	decihexa: function(number) { return this.changeBase(number, this.HexValues, 16); },
   },
   mounted:function(){}
 }
