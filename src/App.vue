@@ -19,7 +19,7 @@
 					<p>El numero {{ number }} en Binario es {{ all? number : deciabin(parseInt(number, 16)) }}</p>
 					<p>El numero {{ number }} en Decimal es {{ all? number : parseInt(number, 16) }}</p>
 				</div>
-				<div v-if="result.length == 0">
+				<div v-if="result.length === 0">
 					<h2><p>Carácter incorrecto {{ error }}</p></h2>
 				</div>
 			</div>
@@ -36,20 +36,18 @@ export default {
   components: {},
   data:function(){
 		return {
-			add: 0,
 			number: undefined,
 			calcula: false,
 			result: [],
-			error: undefined,
+			error: '',
 			all: false,
-			binValues: ['0', '1'],
-			decValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-			HexValues: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
+			binValues: [],
+			decValues: [],
+			HexValues: [],
 		}
 	},
   methods: {
 	reset: function() {
-			this.add = 0;
 			this.calcula = false;
 			this.result = [];
 			this.error = undefined;
@@ -62,23 +60,19 @@ export default {
 			this.all = true;
 		} else if(number != "0") {
 			//Binario
-			let data = this.characherVerifier(number, this.binValues);
-			if(data.toString().length == number.toString().length)	this.result.push('binario');
+			this.checkNumberTypes(number, this.binValues, 'binario');
 			//Decimal
-			data = this.characherVerifier(number, this.decValues);
-			if(data.toString().length == number.toString().length) this.result.push('decimal');
+			this.checkNumberTypes(number, this.decValues, 'decimal');
 			//Hexadecimal
-			data = this.characherVerifier(number.toUpperCase(), this.HexValues, true);
-			if(data.toString().length == number.toString().length) this.result.push('hexadecimal');
+			this.checkNumberTypes(number.toUpperCase(), this.HexValues, 'hexadecimal', true);
 		} else this.error += number;
 	},
-	characherVerifier: function(number, array, last = false) {
-		let data = '';
-		for(let i = "0"; i <= number.toString().length-1; i++)	{
-			if(array.includes(number[i])) data = data + "*";
-			else last? this.error += number[i]: this.error = '';
+	checkNumberTypes: function(number, array, type, last = false) {
+		let length = 0;
+		for(let i = 0; i <= number.toString().length-1; i++)	{
+			array.includes(number[i]) ? length++ : last? this.error += number[i] : this.error = '';
 		}
-		return data;
+		if(length == number.toString().length) this.result.push(type);
 	},
 	//changeBase dec to hexa/bin
 	changeBase: function(number, array, base) {
@@ -96,7 +90,11 @@ export default {
 	//1.4 - Decimal a hexadecimal
 	decihexa: function(number) { return this.changeBase(number, this.HexValues, 16); },
   },
-  mounted:function(){}
+  mounted:function(){
+	this.binValues = ['0', '1'];
+	this.decValues = this.binValues.concat(['2', '3', '4', '5', '6', '7', '8', '9']);
+	this.HexValues = this.decValues.concat(['A', 'B', 'C', 'D', 'E', 'F']);
+  }
 }
 </script>
 <style></style>
