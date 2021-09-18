@@ -20,10 +20,11 @@
 					<p>El numero {{ number }} en Decimal es {{ all? number : parseInt(number, 16) }}</p>
 				</div>
 				<div v-if="result.length === 0">
-					<h2><p>Carácter incorrecto {{ error }}</p></h2>
+					<p v-if="number !== undefined">Carácter incorrecto {{ error.toLowerCase() }}</p>
+					<p v-else>Campo vacío</p>
 				</div>
 			</div>
-			<input @input="reset()" type="text" required v-model="number"/>
+			<input @input="reset()" type="text" required='required' v-model="number"/>
 			<button @click="reset(), calcula = true, checkNumber(number)">calcula</button>
 		</div>
 	</div>
