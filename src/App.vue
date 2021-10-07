@@ -1,30 +1,30 @@
 <template>
 	<div>
-		<h1><p style="text-align: center;">Calculadora de conversión</p></h1>
-		<h3><p style="text-align: center;">Introduce cualquier numero decimal, hexadecimal o binario y se calculará automáticamente al resto de unidades. (ej: de binario a decimal)</p></h3> 
+		<h1><p style="text-align: center;">Conversor de unidades</p></h1>
+		<h3><p style="text-align: center;">Introduce cualquier número {{ decimal }}, {{ hexadecimal }} o {{ binario }} y se calculará automáticamente al resto de unidades. (ej: de {{ binario }} a {{ decimal }})</p></h3> 
 		<div style="text-align: center;">
 			<div v-if="calcula">
-				<div v-if="result.includes('binario')">
-					<h2><p>Origen binario:</p></h2>
-					<p>El numero {{ number }} en decimal es {{ all? number : parseInt(number, 2) }}</p>
-					<p>El numero {{ number }} en Hexadecimal es {{ all? number : decihexa(parseInt(number, 2)) }}</p>
+				<div v-if="result.includes(binario)">
+					<h2><p>Origen {{ binario }}:</p></h2>
+					<p>El número {{ number }} en {{ decimal }} es {{ all? number : parseInt(number, 2) }}</p>
+					<p>El número {{ number }} en {{ hexadecimal }} es {{ all? number : decihexa(parseInt(number, 2)) }}</p>
 				</div>
-				<div v-if="result.includes('decimal')">
-					<h2><p>Origen decimal:</p></h2>
-					<p>El numero {{ number }} en binario es {{ all? number : deciabin(number) }}</p>
-					<p>El numero {{ number }} en Hexadecimal es {{ all? number : decihexa(parseInt(number, 10)) }}</p>
+				<div v-if="result.includes(decimal)">
+					<h2><p>Origen {{ decimal }}:</p></h2>
+					<p>El número {{ number }} en {{ binario }} es {{ all? number : deciabin(number) }}</p>
+					<p>El número {{ number }} en {{ hexadecimal }} es {{ all? number : decihexa(parseInt(number, 10)) }}</p>
 				</div>
 				<div v-if="result.includes(hexadecimal)">
 					<h2><p>Origen hexadecimal:</p></h2>
-					<p>El numero {{ number }} en Binario es {{ all? number : deciabin(parseInt(number, 16)) }}</p>
-					<p>El numero {{ number }} en Decimal es {{ all? number : parseInt(number, 16) }}</p>
+					<p>El número {{ number }} en {{ binario }} es {{ all? number : deciabin(parseInt(number, 16)) }}</p>
+					<p>El número {{ number }} en {{ decimal }} es {{ all? number : parseInt(number, 16) }}</p>
 				</div>
 				<div v-if="result.length === 0">
 					<p v-if="number !== undefined">Carácter incorrecto {{ error.toLowerCase() }}</p>
 					<p v-else>Campo vacío</p>
 				</div>
 			</div>
-			<input @input="reset()" type="text" required='required' v-model="number"/>
+			<input @input="reset()" type="text" v-model="number"/>
 			<button @click="reset(), calcula = true, checkNumber(number)">calcula</button>
 		</div>
 	</div>
